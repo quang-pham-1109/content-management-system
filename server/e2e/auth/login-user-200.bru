@@ -1,0 +1,27 @@
+meta {
+  name: login-user-200
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{BASE_URL}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Email": "{{TEST_EMAIL}}",
+    "Password": "{{TEST_PASSWORD}}"
+  }
+}
+
+vars:post-response {
+  token: res.body.token
+}
+
+assert {
+  res.status: eq 200
+  res.body.token: isDefined
+}

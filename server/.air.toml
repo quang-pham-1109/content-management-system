@@ -1,0 +1,16 @@
+# .air.toml
+
+# General settings
+root = "."
+tmp_dir = "tmp"
+build_dir = "."
+
+# Watch directories
+[build]
+  bin = "tmp/main"        # Binary file path
+  cmd = "go build -o tmp/main ."   # Build command
+  include_ext = ["go"]    # File extensions to watch
+  exclude_dir = ["tmp"]   # Directories to exclude from watching
+
+[run]
+  cmd = "./tmp/main"      # Command to run after building
