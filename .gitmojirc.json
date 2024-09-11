@@ -1,6 +1,6 @@
 {
 	"autoAdd": false,
-	"emojiFormat": "emoji",
+	"emojiFormat": "code",
 	"scopePrompt": true,
 	"messagePrompt": false,
 	"capitalizeTitle": true,
