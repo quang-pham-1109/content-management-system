@@ -1,4 +1,4 @@
-## Server
+# Server
 
 This is the backend of the CMS, written in Go.
 
@@ -9,6 +9,8 @@ This project uses go version 1.26 so please get the exact version. Run these com
 ```
 cd server
 ```
+
+Download all the Go depedencies
 
 ```
 go mod download
@@ -26,4 +28,12 @@ If you are looking to develop with this server, please download [air](https://gi
 
 ## Testing
 
-We use [Bruno](https://www.usebruno.com/) to e2e test our API, it's a very neat CLI API testing tool that doesn't require any credentials and can work normally with a traditional version control
+We use [Bruno](https://www.usebruno.com/) to e2e test our API, it's a very neat CLI API testing tool that doesn't require any credentials and can work normally with a traditional version control, you can visit `server/e2e` to understand more about the API
+
+To run all the e2e scripts
+
+```
+cd server/e2e
+
+bru run --env local
+```
