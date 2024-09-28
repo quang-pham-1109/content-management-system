@@ -1,4 +1,18 @@
+<script setup lang="ts">
+const toast = useToast()
+
+const show = () => {
+  toast.add({
+    severity: 'info',
+    summary: 'Info',
+    detail: 'Message Content',
+    life: 3000,
+  })
+}
+</script>
+
 <template>
+  <Toast />
   <div
     class="bg-surface-100 dark:bg-surface-900 flex items-center justify-center min-h-screen p-10"
   >
@@ -8,7 +22,7 @@
       <h1 class="text-4xl text-black dark:text-white font-bold text-center">
         Tailwind CSS + PrimeVue
       </h1>
-      <Button label="Submit" />
+      <Button label="Submit" @click="show" />
       <InputText placeholder="PrimeVue" />
       <Panel header="Default Preset">
         <p>
