@@ -1,0 +1,32 @@
+{
+  "name": "CMS",
+  "image": "mcr.microsoft.com/devcontainers/go",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "go.toolsManagement.autoUpdate": true,
+        "go.gopath": "/go",
+        "go.goroot": "/usr/local/go",
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "esbenp.prettier-vscode", 
+        "nuxtr.nuxt-vscode-extentions", 
+        "golang.go"      
+      ]
+    }
+  },
+  "forwardPorts": [
+    3000,  // Nuxt.js default port
+    3001   // Common Go server port
+  ],
+  "containerEnv": {
+    "GOPATH": "/go"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20.9.0"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  }
+}
