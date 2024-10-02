@@ -6,10 +6,9 @@ This is the frontend for our Content Management System (CMS), built using [Nuxt.
 
 Follow these steps to set up the project locally:
 
-1. Clone the repository
-2. Navigate to the project directory
-3. Install dependencies with `npm install`
-4. Start the development server with `npm run dev`
+2. Navigate to `/web` directory
+3. Install dependencies with `yarn install`
+4. Start the development server with `yarn run dev`
 
 ## Dependencies
 
