@@ -1,6 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const tokenCookie = useCookie('token')
-  const token = tokenCookie.value
 
   // If no token, redirect to the login page
   if (!token) {

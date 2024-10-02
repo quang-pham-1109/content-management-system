@@ -1,5 +1,5 @@
 /**
- * Custom API Fetch hook for fetching data in the Client-side
+ * Custom API Fetch hook to interact with the API in the client-side
  */
 export const useAPIClient = () => {
   return {

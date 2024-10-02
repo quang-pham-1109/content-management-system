@@ -13,23 +13,3 @@ The project is split into two main parts:
 ## Getting Started
 
 You can get started by cloning the repo, for the full instruction on how to setup please find them in the respective `/web` and `/server` directories
-
-## Contributing
-
-This project uses [gitmoji](https://github.com/carloscuesta/gitmoji-cli) to format its complete, so you should download the CLI and follow its instruction to commit to the project.
-
-To commit:
-
-- Stash your changes
-
-```
-git add .
-```
-
-- Run commit, the gitmoji CLI will run as pre-commit hook
-
-```
-git commit
-```
-
-- To save commit and exit vim, please press `:wq`

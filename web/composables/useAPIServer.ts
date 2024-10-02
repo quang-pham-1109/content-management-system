@@ -13,7 +13,16 @@ interface ErrorOptions {
   message: string
 }
 
-export function useAPI<T>(loading: Ref<boolean>, method: HTTPMethod = 'GET') {
+/**
+ * Hook to fetch data from the server-side
+ * @param loading
+ * @param method
+ * @returns
+ */
+export function useAPIServer<T>(
+  loading: Ref<boolean>,
+  method: HTTPMethod = 'GET'
+) {
   const toast = useToast()
 
   const fetchData = async (
