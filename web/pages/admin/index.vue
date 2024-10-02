@@ -1,48 +1,57 @@
 <script setup lang="ts">
-import { useCookie } from 'nuxt/app'
+import { useCookie, useState, useRuntimeConfig, navigateTo } from '#imports'
+import { useAPI } from '~/composables/useAPIServer'
 
+// PrimeVue's useToast for additional toast messages if needed
+import { useToast } from 'primevue/usetoast'
+
+// Reactive states for email and password
 const email = useState<string>('email', () => '')
 const password = useState<string>('password', () => '')
 const loading = useState<boolean>('loading', () => false)
-const errorMessage = useState<string>('errorMessage', () => '')
 
+// Access runtime configuration
 const config = useRuntimeConfig()
 
+// Manage the authentication token via cookies
 const tokenCookie = useCookie('token')
 
+// Define the structure of the login response
 interface LoginResponse {
   token: string
 }
 
+// Initialize the API request composable for POST requests
+const { fetchData } = useAPI<LoginResponse>(loading, 'POST')
+
+// Initialize PrimeVue's Toast
+const toast = useToast()
+
+// Login function utilizing the useApiRequest composable
 const login = async () => {
-  loading.value = true
-  errorMessage.value = ''
-  try {
-    const response = await $fetch<LoginResponse>(
-      `${config.public.publicPath}/auth/login`,
-      {
-        method: 'POST',
-        body: {
-          email: email.value,
-          password: password.value,
-        },
-      }
-    )
+  const response = await fetchData(`${config.public.publicPath}/auth/login`, {
+    body: {
+      email: email.value,
+      password: password.value,
+    },
+  })
 
-    if (response.token) {
-      // Set the token in the 'token' cookie
-      tokenCookie.value = response.token
+  // if (response?.token) {
+  //   // Set the token in the 'token' cookie
+  //   tokenCookie.value = response.token
 
-      // Redirect to the dashboard after successful login
-      navigateTo('/dashboard')
-    } else {
-      errorMessage.value = 'Login failed. Please check your credentials.'
-    }
-  } catch (error) {
-    errorMessage.value = 'Login failed. Please check your credentials.'
-  } finally {
-    loading.value = false
-  }
+  //   // Redirect to the dashboard after successful login
+  //   navigateTo('/dashboard')
+  // } else {
+  //   // Handle cases where token is not present but no error was thrown
+  //   // Display an error toast
+  //   // toast.add({
+  //   //   severity: 'error',
+  //   //   summary: 'Login Failed',
+  //   //   detail: 'Please check your credentials and try again.',
+  //   //   life: 3000,
+  //   // })
+  // }
 }
 </script>
 
@@ -58,12 +67,6 @@ const login = async () => {
           <InputText id="email" v-model="email" />
           <label for="password">Password</label>
           <InputText id="password" v-model="password" type="password" />
-          <p
-            v-if="errorMessage"
-            class="text-red-500 text-center mt-2 font-semibold"
-          >
-            {{ errorMessage }}
-          </p>
         </div>
       </template>
       <template #footer>
@@ -72,6 +75,7 @@ const login = async () => {
           class="w-full"
           @click="login"
           :loading="loading"
+          :disabled="loading"
         />
       </template>
     </Card>
