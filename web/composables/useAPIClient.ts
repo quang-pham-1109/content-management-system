@@ -1,32 +1,13 @@
 import { useToast } from 'primevue/usetoast'
 import { isLeft } from '@/fp-ts/Either'
 import { PathReporter } from '@/io-ts/lib/PathReporter'
-
-import * as t from 'io-ts'
-
-type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-
-interface RequestOptions {
-  headers?: Record<string, string>
-  body?: any
-  params?: Record<string, any>
-}
-
-const errorResponseC = t.type({
-  code: t.number,
-  error: t.string,
-})
-
-export type ErrorResponse = t.TypeOf<typeof errorResponseC>
-
-// Toast severity types of @PrimeVue
-type ToastSeverity =
-  | 'success'
-  | 'error'
-  | 'info'
-  | 'warn'
-  | 'secondary'
-  | 'contrast'
+import {
+  errorResponseC,
+  type ErrorResponse,
+  type HTTPMethod,
+  type RequestOptions,
+  type ToastSeverity,
+} from '~/types/api'
 
 /**
  * Hook to make API requests on the Client-side using $fetch
@@ -47,6 +28,8 @@ export const useAPIClient = (loading: Ref<boolean>, method: HTTPMethod) => {
     const { headers, body, params } = requestOption
 
     try {
+      loading.value = true
+
       const response = await $fetch<T>(url, {
         method,
         headers: {
@@ -70,6 +53,8 @@ export const useAPIClient = (loading: Ref<boolean>, method: HTTPMethod) => {
       }
 
       return decodedError.right
+    } finally {
+      loading.value = false
     }
   }
 
