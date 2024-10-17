@@ -1,57 +1,61 @@
 <script setup lang="ts">
 import { useCookie, useState, useRuntimeConfig, navigateTo } from '#imports'
-import { useAPI } from '~/composables/useAPIServer'
+import { useAPIClient } from '#imports'
 
-// PrimeVue's useToast for additional toast messages if needed
-import { useToast } from 'primevue/usetoast'
-
-// Reactive states for email and password
 const email = useState<string>('email', () => '')
 const password = useState<string>('password', () => '')
 const loading = useState<boolean>('loading', () => false)
 
-// Access runtime configuration
 const config = useRuntimeConfig()
-
-// Manage the authentication token via cookies
 const tokenCookie = useCookie('token')
 
-// Define the structure of the login response
 interface LoginResponse {
   token: string
 }
 
-// Initialize the API request composable for POST requests
-const { fetchData } = useAPI<LoginResponse>(loading, 'POST')
+const { fetchData, displayMessage } = useAPIClient(loading, 'POST')
 
-// Initialize PrimeVue's Toast
-const toast = useToast()
-
-// Login function utilizing the useApiRequest composable
 const login = async () => {
-  const response = await fetchData(`${config.public.publicPath}/auth/login`, {
-    body: {
-      email: email.value,
-      password: password.value,
-    },
-  })
+  const response = await fetchData<LoginResponse>(
+    `${config.public.publicPath}/auth/login`,
+    {
+      body: {
+        email: email.value,
+        password: password.value,
+      },
+    }
+  )
 
-  // if (response?.token) {
-  //   // Set the token in the 'token' cookie
-  //   tokenCookie.value = response.token
+  // Handle the error case
+  if (isErrorResponse(response)) {
+    if (response.code === 401) {
+      displayMessage({
+        title: 'Error',
+        detail: 'Invalid email or password',
+        severity: 'error',
+      })
+    }
 
-  //   // Redirect to the dashboard after successful login
-  //   navigateTo('/dashboard')
-  // } else {
-  //   // Handle cases where token is not present but no error was thrown
-  //   // Display an error toast
-  //   // toast.add({
-  //   //   severity: 'error',
-  //   //   summary: 'Login Failed',
-  //   //   detail: 'Please check your credentials and try again.',
-  //   //   life: 3000,
-  //   // })
-  // }
+    if (response.code === 400) {
+      displayMessage({
+        title: 'Error',
+        detail: 'Bad Request',
+        severity: 'error',
+      })
+    }
+
+    if (response.code === 500) {
+      displayMessage({
+        title: 'Error',
+        detail: 'Internal Server Error',
+        severity: 'error',
+      })
+    }
+  } else {
+    // add token into cookie & navigate to dashboard
+    tokenCookie.value = response.token
+    navigateTo('/dashboard')
+  }
 }
 </script>
 

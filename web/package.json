@@ -1,6 +1,7 @@
 {
   "name": "web",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -12,10 +13,12 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.8.1",
     "@primevue/nuxt-module": "^4.0.2",
-    "tailwindcss-primeui": "^0.3.4",
-    "nuxt": "^3.12.1"
+    "nuxt": "^3.12.1",
+    "tailwindcss-primeui": "^0.3.4"
   },
   "dependencies": {
+    "fp-ts": "^2.16.9",
+    "io-ts": "^2.2.21",
     "primevue": "^4.0.2",
     "vue": "^3.3.7",
     "vue-router": "^4.2.5"

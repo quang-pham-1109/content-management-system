@@ -19,5 +19,8 @@ export default defineNuxtConfig({
         process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:3001',
     },
   },
+  alias: {
+    '@': path.resolve(__dirname, './node_modules'),
+  },
   compatibilityDate: '2024-09-01',
 })
