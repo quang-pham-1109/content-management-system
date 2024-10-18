@@ -5,6 +5,7 @@ definePageMeta({
 </script>
 
 <template>
+  Dashboard
   <div class="flex justify-center items-center h-screen">
     <Button label="click me" />
   </div>
