@@ -4,7 +4,7 @@ import 'primeicons/primeicons.css'
 </script>
 
 <template>
-  <div class="p-dark">
+  <div>
     <!-- <NuxtLayout> -->
     <Toast />
     <NuxtPage />
