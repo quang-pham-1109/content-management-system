@@ -14,11 +14,13 @@
     "@nuxtjs/tailwindcss": "^6.8.1",
     "@primevue/nuxt-module": "^4.0.2",
     "nuxt": "^3.12.1",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss-primeui": "^0.3.4"
   },
   "dependencies": {
     "fp-ts": "^2.16.9",
     "io-ts": "^2.2.21",
+    "primeicons": "^7.0.0",
     "primevue": "^4.0.2",
     "vue": "^3.3.7",
     "vue-router": "^4.2.5"

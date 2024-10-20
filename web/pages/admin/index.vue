@@ -16,51 +16,62 @@ interface LoginResponse {
 const { fetchData, displayMessage } = useAPIClient(loading, 'POST')
 
 const login = async () => {
-  const response = await fetchData<LoginResponse>(
-    `${config.public.publicPath}/auth/login`,
-    {
-      body: {
-        email: email.value,
-        password: password.value,
-      },
-    }
-  )
+  try {
+    const response = await fetchData<LoginResponse>(
+      `${config.public.publicPath}/auth/login`,
+      {
+        body: {
+          email: email.value,
+          password: password.value,
+        },
+      }
+    )
 
-  // Handle the error case
-  if (isErrorResponse(response)) {
-    if (response.code === 401) {
-      displayMessage({
-        title: 'Error',
-        detail: 'Invalid email or password',
-        severity: 'error',
-      })
-    }
+    // Handle the error case
+    if (isErrorResponse(response)) {
+      if (response.code === 401) {
+        displayMessage({
+          title: 'Error',
+          detail: 'Invalid email or password',
+          severity: 'error',
+        })
+      }
 
-    if (response.code === 400) {
-      displayMessage({
-        title: 'Error',
-        detail: 'Bad Request',
-        severity: 'error',
-      })
-    }
+      if (response.code === 400) {
+        displayMessage({
+          title: 'Error',
+          detail: 'Bad Request',
+          severity: 'error',
+        })
+      }
 
-    if (response.code === 500) {
+      if (response.code === 500) {
+        displayMessage({
+          title: 'Error',
+          detail: 'Internal Server Error',
+          severity: 'error',
+        })
+      }
+    } else {
+      // add token into cookie & navigate to dashboard
       displayMessage({
-        title: 'Error',
-        detail: 'Internal Server Error',
-        severity: 'error',
+        title: 'Success',
+        detail: 'Login successfully',
+        severity: 'success',
       })
+      tokenCookie.value = response.token
+      navigateTo('/dashboard')
     }
-  } else {
-    // add token into cookie & navigate to dashboard
-    tokenCookie.value = response.token
-    navigateTo('/dashboard')
+  } catch (error) {
+    console.error('Login error:', error)
   }
 }
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-screen">
+  <div
+    class="bg-surface-100 dark:bg-gray-800 flex justify-center items-center h-screen"
+  >
     <Card class="w-96 overflow-hidden">
       <template #title>
         <p class="text-center">Login</p>
@@ -80,6 +91,17 @@ const login = async () => {
           @click="login"
           :loading="loading"
           :disabled="loading"
+          v-tooltip.bottom="{
+            value: 'PrimeVue Rocks',
+            pt: {
+              arrow: {
+                style: {
+                  borderBottomColor: 'var(--p-primary-color)',
+                },
+              },
+              text: '!bg-primary !text-primary-contrast !font-medium',
+            },
+          }"
         />
       </template>
     </Card>
