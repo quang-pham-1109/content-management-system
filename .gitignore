@@ -6,3 +6,5 @@ web/.env
 server/.env
 server/e2e/.env
 server/tmp/
+
+logs/
