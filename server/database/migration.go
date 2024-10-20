@@ -11,7 +11,6 @@ func Migrate(db *gorm.DB) error {
 	var models = []interface{}{
 		model.User{},
 		model.Post{},
-		model.Post{},
 		model.Media{},
 		model.Category{},
 		model.Tag{},

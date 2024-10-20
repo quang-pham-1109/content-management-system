@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -8,7 +9,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// Genereate a JWT Token with the secret key loaded from .env, and userID as the payload
+// GenereateJWT create a JWT Token with the secret key loaded from .env, and userID as the payload
 func GenerateJWT(userID uint) (string, error) {
 	secretKey := os.Getenv("SECRET_KEY")
 
@@ -54,4 +55,34 @@ func ValidateJWT(tokenString string) bool {
 	}
 
 	return false
+}
+
+// GetUserIdFromJWT returns the userID from the JWT tokens
+func GetUserIdFromJWT(tokenString string) (uint, error) {
+	secretKey := os.Getenv("SECRET_KEY")
+
+	// Parse the token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Validate the signing method
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		// Return the secret key as []byte
+		return []byte(secretKey), nil
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	// Check if the token is valid and extract the claims
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		// Extract the userID from the claims
+		if userID, ok := claims["userID"].(float64); ok {
+			return uint(userID), nil
+		}
+		return 0, errors.New("userID not found in token")
+	}
+
+	return 0, errors.New("invalid token")
 }
