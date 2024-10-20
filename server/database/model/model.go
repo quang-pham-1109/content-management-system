@@ -10,7 +10,6 @@ type User struct {
 	Username string `gorm:"uniqueIndex;not null"`
 	Email    string `gorm:"uniqueIndex;not null"`
 	Password string `gorm:"not null"`
-	Role     string `gorm:"type:varchar(20);not null;default:'Editor';check:role IN ('Admin', 'Editor')"`
 	Posts    []Post `gorm:"foreignKey:AuthorID"` // One-to-Many relationship with Posts
 }
 
