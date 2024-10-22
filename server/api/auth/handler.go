@@ -2,64 +2,50 @@ package auth
 
 import (
 	"net/http"
-	"server/utils"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-var signinInput struct {
+// Handler struct
+type Handler struct {
+	authService Service
+}
+
+// NewHandler initializes the handler with the auth service
+func NewHandler(authService Service) *Handler {
+	return &Handler{authService: authService}
+}
+
+// validation struct for POST /auth/login
+type SignInInput struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
 }
 
-// POST /auth/login
-func Login(c *gin.Context) {
+/*
+Login user
+*/
+func (h *Handler) Login(c *gin.Context) {
+	var signinInput SignInInput
+
 	// Validate input
 	if err := c.ShouldBindJSON(&signinInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	db, exists := c.MustGet("db").(*gorm.DB)
-	if !exists {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection not found"})
-		return
-	}
-
-	// Check if the user exists
-	user, err := GetUserByEmail(db, signinInput.Email)
+	// Call service to handle login logic
+	token, err := h.authService.Login(signinInput.Email, signinInput.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
-		return
-	}
-	if user.Email == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Check if the password is correct
-	if !utils.CheckPassWordHash(signinInput.Password, user.Password) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
-		return
-	}
-
-	// Generate JWT token
-	token, err := utils.GenerateJWT(user.ID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"token": token,
-	})
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-// GET /auth to test the JWT middleware
-func GetAuth(c *gin.Context) {
+// GetAuth handler to test authentication
+func (h *Handler) GetAuth(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Authenticated",
 	})

@@ -10,7 +10,6 @@ type User struct {
 	Username string `gorm:"uniqueIndex;not null"`
 	Email    string `gorm:"uniqueIndex;not null"`
 	Password string `gorm:"not null"`
-	Role     string `gorm:"type:varchar(20);not null;default:'Editor';check:role IN ('Admin', 'Editor')"`
 	Posts    []Post `gorm:"foreignKey:AuthorID"` // One-to-Many relationship with Posts
 }
 
@@ -18,8 +17,8 @@ type User struct {
 type Post struct {
 	ID         uint   `gorm:"primaryKey"`
 	Title      string `gorm:"not null"`
-	Slug       string `gorm:"uniqueIndex;not null"` // SEO-friendly slug
-	SourceUrl  string `gorm:"not null"`             // URL for markdown file (S3 URL)
+	Slug       string `gorm:"uniqueIndex"` // SEO-friendly slug
+	Content    string // Markdown content
 	AuthorID   uint   // Foreign Key for User (Author)
 	CategoryID uint   // Foreign Key for Category
 	Status     string `gorm:"type:varchar(20);not null;default:'draft';check:status IN ('draft', 'published', 'archived')"`

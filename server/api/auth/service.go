@@ -1,39 +1,46 @@
 package auth
 
 import (
-	"server/database/model"
+	"errors"
 	"server/utils"
-
-	"gorm.io/gorm"
 )
 
-// CheckUserExistsByEmail checks if a user with the given email already exists in the database
-func CheckUserExistsByEmail(db *gorm.DB, email string) (bool, error) {
-	var user model.User
-	err := db.Raw("SELECT * FROM users WHERE email = ? LIMIT 1", email).Scan(&user).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return false, err
-	}
-	return user.Email != "", nil
+// Service interface for auth business logic
+type Service interface {
+	Login(email, password string) (string, error)
 }
 
-// CreateUser creates a new user in the database
-func CreateUser(db *gorm.DB, username, email, password string) error {
-	// Hash the password
-	hashedPassword := utils.HashWithSecretKey(password)
-
-	newUser := model.User{
-		Username: username,
-		Email:    email,
-		Password: hashedPassword, // You should hash the password before saving
-	}
-
-	return db.Create(&newUser).Error
+// AuthService struct implements the Service interface
+type AuthService struct {
+	repo Repository
 }
 
-// GetUserByEmail retrieves a userID by email from the database
-func GetUserByEmail(db *gorm.DB, email string) (model.User, error) {
-	var user model.User
-	err := db.Raw("SELECT * FROM users WHERE email = ? LIMIT 1", email).Scan(&user).Error
-	return user, err
+// NewService initializes a new AuthService
+func NewService(repo Repository) *AuthService {
+	return &AuthService{repo: repo}
+}
+
+// Login handles the user authentication logic
+func (s *AuthService) Login(email, password string) (string, error) {
+	// Check if the user exists
+	user, err := s.repo.GetUserByEmail(email)
+	if err != nil {
+		return "", errors.New("database error")
+	}
+	if user.Email == "" {
+		return "", errors.New("invalid email or password")
+	}
+
+	// Verify password
+	if !utils.CheckPassWordHash(password, user.Password) {
+		return "", errors.New("invalid email or password")
+	}
+
+	// Generate JWT token
+	token, err := utils.GenerateJWT(user.ID)
+	if err != nil {
+		return "", errors.New("failed to generate token")
+	}
+
+	return token, nil
 }
