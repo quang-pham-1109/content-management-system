@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const tokenCookie = useCookie('token')
 
   // If no token, redirect to the login page
-  if (!token) {
+  if (!tokenCookie.value) {
     return navigateTo('/')
   }
 
@@ -13,7 +13,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const response = await $fetch(`${config.public.publicPath}/auth`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenCookie.value}`,
       },
     })
 

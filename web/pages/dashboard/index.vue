@@ -5,7 +5,12 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-screen">
-    <Button label="click me" />
+  <div class="flex h-screen">
+    <DashboardNavbar />
+    <DashboardMainContent />
   </div>
 </template>
+
+<style>
+@import url('~/assets/css/base.css');
+</style>

@@ -1,6 +1,6 @@
 # CMS
 
-This is a Content Management System (CMS)
+This is a Content Management System (CMS), setting up as a monorepo.
 
 ## Architecture
 
@@ -12,4 +12,10 @@ The project is split into two main parts:
 
 ## Getting Started
 
-You can get started by cloning the repo, for the full instruction on how to setup please find them in the respective `/web` and `/server` directories
+You can get started by cloning the repo, for the full instruction on how to setup the individual modules, please find them in the respective `/web` and `/server` directories
+
+## Development
+
+We use [DevPod](https://devpod.sh/) to standardise the dev enviroment for devs. DevPod would use [Docker](https://www.docker.com/) to spin up an instance based on `.devcontainer.json` , and you'd be able to dev inside this enviroment.
+
+This config would be the same one as the one used in deployment.

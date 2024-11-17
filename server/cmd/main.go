@@ -1,7 +1,7 @@
 package main
 
 import (
-	"server/api/auth"
+	"server/api"
 	"server/database"
 	"server/middleware"
 
@@ -13,15 +13,11 @@ func main() {
 
 	router := gin.Default()
 
-	router.Use(middleware.InjectDatabase(db))
-
+	// Cors middleware
 	router.Use(middleware.Cors())
 
-	authRoutes := router.Group("/auth")
-	{
-		authRoutes.POST("/login", auth.Login)
-		authRoutes.GET("", middleware.Authenticate(), auth.GetAuth)
-	}
+	// Init the routes
+	api.RegisterRoutes(router, db)
 
 	// Server will run on port 3001
 	router.Run(":3001")
