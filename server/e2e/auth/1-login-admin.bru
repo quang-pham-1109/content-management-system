@@ -1,11 +1,11 @@
 meta {
-  name: login-user-200
+  name: 1-login-admin
   type: http
   seq: 2
 }
 
 post {
-  url: {{BASE_URL}}/auth/login
+  url: http://localhost:3001/auth/login
   body: json
   auth: none
 }

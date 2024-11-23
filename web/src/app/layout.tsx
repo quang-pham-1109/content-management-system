@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
 import "../assets/globals.css";
+import type { Metadata } from "next";
+import ClientProviders from "@/providers/client-providers";
 
 export const metadata: Metadata = {
   title: "My Blog",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ClientProviders>{children}</ClientProviders>
+      </body>
     </html>
   );
 }
