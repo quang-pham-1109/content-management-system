@@ -10,15 +10,18 @@ type Service interface {
 }
 
 type PostService struct {
-	repo Repository
+	repository Repository
 }
 
-func NewService(repo Repository) *PostService {
-	return &PostService{repo: repo}
+func NewService(repository Repository) *PostService {
+	return &PostService{repository: repository}
 }
 
-// CreatePost get the post input and the token, and call the repository to create a new post
-func (s *PostService) CreatePost(input postCreateInput, token string) error {
+func (service *PostService) CreatePost(input postCreateInput, token string) error {
+	if input.Slug == "" {
+		input.Slug = utils.GenerateSlug(input.Title)
+	}
+
 	post := model.Post{
 		Title:   input.Title,
 		Slug:    input.Slug,
@@ -31,7 +34,7 @@ func (s *PostService) CreatePost(input postCreateInput, token string) error {
 		return err
 	}
 
-	err = s.repo.CreatePost(post, authorId)
+	err = service.repository.CreatePost(post, authorId)
 	if err != nil {
 		return err
 	}

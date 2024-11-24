@@ -13,6 +13,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
  * This is a wrapper function for fetchingData from the API.
  * It takes in the method, path, name, and body of the request.
  * It returns the data or throw a FetchError if the request fails.
+ * This error can be caught and handled in the `state` layer by React Query.
  * @param {FetchDataProps} { method, path, name, body }
  * @returns {Promise<T | FetchError>}
  */

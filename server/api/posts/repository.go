@@ -12,15 +12,14 @@ type Repository interface {
 }
 
 type PostRepository struct {
-	db *gorm.DB
+	database *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *PostRepository {
-	return &PostRepository{db: db}
+func NewRepository(database *gorm.DB) *PostRepository {
+	return &PostRepository{database: database}
 }
 
-// CreatePost creates a new post in the database
-func (r *PostRepository) CreatePost(post model.Post, authorId uint) error {
+func (repository *PostRepository) CreatePost(post model.Post, authorId uint) error {
 	query := `
         INSERT INTO posts (title, slug, content, status, author_id, created_at)
         VALUES (?, ?, ?, ?, ?, ?)
@@ -28,6 +27,5 @@ func (r *PostRepository) CreatePost(post model.Post, authorId uint) error {
 
 	createdAt := time.Now()
 
-	// Execute the raw SQL query
-	return r.db.Exec(query, post.Title, post.Slug, post.Content, post.Status, authorId, createdAt).Error
+	return repository.database.Exec(query, post.Title, post.Slug, post.Content, post.Status, authorId, createdAt).Error
 }

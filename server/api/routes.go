@@ -8,8 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// initializes all routes related to the API
-func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
-	auth.RegisterAuthRoutes(router, db)
-	posts.RegisterPostRoutes(router, db)
+func RegisterRoutes(router *gin.Engine, database *gorm.DB) {
+	auth.RegisterAuthRoutes(router, database)
+	posts.RegisterPostRoutes(router, database)
 }

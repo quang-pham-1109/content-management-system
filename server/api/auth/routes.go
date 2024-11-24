@@ -7,9 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// Registers authentication-related routes
-func RegisterAuthRoutes(router *gin.Engine, db *gorm.DB) {
-	authReposity := NewRepository(db)
+func RegisterAuthRoutes(router *gin.Engine, database *gorm.DB) {
+	authReposity := NewRepository(database)
 	authService := NewService(authReposity)
 	authHandler := NewHandler(authService)
 

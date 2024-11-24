@@ -10,14 +10,12 @@ import (
 )
 
 func Connect() *gorm.DB {
-	// Load environment variables from .env file
 	err := godotenv.Load()
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	// Get database configuration from environment variables
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
@@ -29,8 +27,8 @@ func Connect() *gorm.DB {
 	// Create DSN (Data Source Name)
 	dsn := "host=" + host + " user=" + user + " password=" + password + " dbname=" + dbname + " port=" + port + " sslmode=" + sslmode + " TimeZone=" + timezone
 
-	// Connect to the database
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	// Open conntection to the database
+	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		PrepareStmt: false, // Disable prepared statement as it is not supported by supabase
 	})
 
@@ -38,10 +36,10 @@ func Connect() *gorm.DB {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Update the DB schema
-	err = Migrate(db)
+	// Update the DB schema based on the struct in model/model.go
+	err = Migrate(database)
 	if err != nil {
 		log.Fatal("Failed to migrate the schema:", err)
 	}
-	return db
+	return database
 }
