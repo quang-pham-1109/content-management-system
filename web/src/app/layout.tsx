@@ -1,5 +1,6 @@
 import "../assets/globals.css";
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/sonner";
 import ClientProviders from "@/providers/client-providers";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClientProviders>{children}</ClientProviders>
+        <Toaster />
       </body>
     </html>
   );

@@ -13,28 +13,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { loginAdminAtom } from "@/state/login-state";
+import { useAtomValue } from "jotai";
 
 const adminLoginFormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  email: z.string().email({ message: "Invalid email address" }).min(2, {
+    message: "Email must be at least 2 characters.",
   }),
-  password: z.string().min(4, {
-    message: "Password must be at least 4 characters",
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters",
   }),
 });
 
+type AdminLoginForm = z.infer<typeof adminLoginFormSchema>;
+
 const AdminForm = () => {
-  const adminLoginForm = useForm<z.infer<typeof adminLoginFormSchema>>({
+  const { mutate } = useAtomValue(loginAdminAtom);
+
+  const adminLoginForm = useForm<AdminLoginForm>({
     resolver: zodResolver(adminLoginFormSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof adminLoginFormSchema>) {
-    console.log(values);
-  }
+  const onSubmit = (values: AdminLoginForm) => {
+    mutate(values);
+  };
   return (
     <Form {...adminLoginForm}>
       <form
@@ -43,12 +49,12 @@ const AdminForm = () => {
       >
         <FormField
           control={adminLoginForm.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Your username" {...field} />
+                <Input placeholder="Your email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
