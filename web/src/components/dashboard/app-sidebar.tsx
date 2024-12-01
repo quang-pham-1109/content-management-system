@@ -14,133 +14,69 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
 
 // This is sample data.
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+  versions: ["1.0.0", "1.1.0", "2.0.0-beta"],
   navMain: [
     {
-      title: "Getting Started",
+      title: "Your Content", // Default selected tab
       url: "#",
       items: [
         {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
+          title: "My Posts",
+          url: "#my-posts",
           isActive: true,
         },
         {
-          title: "Rendering",
-          url: "#",
+          title: "Drafts",
+          url: "#drafts",
         },
         {
-          title: "Caching",
-          url: "#",
+          title: "Published",
+          url: "#published",
         },
         {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
+          title: "Trash",
+          url: "#trash",
         },
       ],
     },
     {
-      title: "API Reference",
+      title: "Editor Features",
       url: "#",
       items: [
         {
-          title: "Components",
-          url: "#",
+          title: "Markdown Syntax",
+          url: "#markdown-syntax",
         },
         {
-          title: "File Conventions",
-          url: "#",
+          title: "Preview Mode",
+          url: "#preview-mode",
         },
         {
-          title: "Functions",
-          url: "#",
+          title: "Export",
+          url: "#export",
         },
         {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
+          title: "Import",
+          url: "#import",
         },
       ],
     },
     {
-      title: "Architecture",
+      title: "Settings",
       url: "#",
       items: [
         {
-          title: "Accessibility",
-          url: "#",
+          title: "General Settings",
+          url: "#general-settings",
         },
         {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
+          title: "User Preferences",
+          url: "#user-preferences",
         },
       ],
     },
@@ -150,13 +86,18 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
+      {/* This should be updated to as a user info combobox */}
       <SidebarHeader>
         <VersionSwitcher
           versions={data.versions}
           defaultVersion={data.versions[0]}
         />
         <SearchForm />
+        <Button className="my-2 p-3">
+          <Plus /> New Page
+        </Button>
       </SidebarHeader>
+
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
