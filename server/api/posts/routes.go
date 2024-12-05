@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func RegisterPostRoutes(router *gin.Engine, db *gorm.DB) {
-	postRepository := NewRepository(db)
+func RegisterPostRoutes(router *gin.Engine, database *gorm.DB) {
+	postRepository := NewRepository(database)
 	postService := NewService(postRepository)
 	postHandler := NewHandler(postService)
 

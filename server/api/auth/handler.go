@@ -6,47 +6,46 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Handler struct
 type Handler struct {
 	authService Service
 }
 
-// NewHandler initializes the handler with the auth service
 func NewHandler(authService Service) *Handler {
 	return &Handler{authService: authService}
 }
 
-// validation struct for POST /auth/login
 type SignInInput struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
 }
 
 /*
-Login user
+POST /auth/login
 */
-func (h *Handler) Login(c *gin.Context) {
+func (handler *Handler) Login(context *gin.Context) {
 	var signinInput SignInInput
 
-	// Validate input
-	if err := c.ShouldBindJSON(&signinInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := context.ShouldBindJSON(&signinInput); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Call service to handle login logic
-	token, err := h.authService.Login(signinInput.Email, signinInput.Password)
+	token, err := handler.authService.Login(signinInput.Email, signinInput.Password)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		context.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	context.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-// GetAuth handler to test authentication
-func (h *Handler) GetAuth(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
+/*
+GET /auth
+It is here to verify authentication
+the frontend can use this endpoint to check if the user is authenticated
+*/
+func (handler *Handler) GetAuth(context *gin.Context) {
+	context.JSON(http.StatusOK, gin.H{
 		"message": "Authenticated",
 	})
 }

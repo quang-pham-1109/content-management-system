@@ -13,19 +13,19 @@ start_go_server() {
 
 # Function to start the Client
 start_nuxt_client() {
-  echo "Starting Nuxt.js client..."
+  echo "Starting Next.js client..."
   cd web || exit
-  nohup yarn run dev > ../logs/client.log 2>&1 &  # Run in background and log output
+  nohup npm run dev > ../logs/client.log 2>&1 &  # Run in background and log output
   cd ..
 }
 
 # Create logs directory if it doesn't exist
 mkdir -p logs
+
 # Start both the Go server and Nuxt client
 start_go_server
 start_nuxt_client
 
 echo "Both server and client are running in the background. Logs: logs/server.log and logs/client.log"
-
 # Wait for both processes to complete
 wait

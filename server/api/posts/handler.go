@@ -22,23 +22,23 @@ type postCreateInput struct {
 	Status  string `json:"status" binding:"required,oneof=draft published archived"`
 }
 
-func (h *Handler) CreatePost(c *gin.Context) {
+func (handler *Handler) CreatePost(context *gin.Context) {
 	var input postCreateInput
 
-	// Validate input
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := context.ShouldBindJSON(&input); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Call service to handle login logic
-	tokenString := c.GetHeader("Authorization")
+	// token is used to get the authorId
+	tokenString := context.GetHeader("Authorization")
 
-	err := h.postService.CreatePost(input, tokenString[7:])
+	// [7:] is used to remove the "Bearer " prefix from the token
+	err := handler.postService.CreatePost(input, tokenString[7:])
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "Post created"})
+	context.JSON(http.StatusCreated, gin.H{"message": "Post created"})
 }

@@ -1,0 +1,27 @@
+meta {
+  name: 1-login-admin
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3001/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{TEST_EMAIL}}",
+    "password": "{{TEST_PASSWORD}}"
+  }
+}
+
+vars:post-response {
+  token: res.body.token
+}
+
+assert {
+  res.status: eq 200
+  res.body.token: isDefined
+}

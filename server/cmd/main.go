@@ -9,16 +9,13 @@ import (
 )
 
 func main() {
-	db := database.Connect()
+	database := database.Connect()
 
 	router := gin.Default()
 
-	// Cors middleware
 	router.Use(middleware.Cors())
 
-	// Init the routes
-	api.RegisterRoutes(router, db)
+	api.RegisterRoutes(router, database)
 
-	// Server will run on port 3001
 	router.Run(":3001")
 }

@@ -14,6 +14,11 @@ The project is split into two main parts:
 
 You can get started by cloning the repo, for the full instruction on how to setup the individual modules, please find them in the respective `/web` and `/server` directories
 
+## Starting the project
+
+You can run `./start.sh` to start the project, you might have to give the script permisison beforehand via: `chmod +x ./start.sh`
+It will run both the server and the frontend without hogging both terminal.
+
 ## Development
 
 We use [DevPod](https://devpod.sh/) to standardise the dev enviroment for devs. DevPod would use [Docker](https://www.docker.com/) to spin up an instance based on `.devcontainer.json` , and you'd be able to dev inside this enviroment.
