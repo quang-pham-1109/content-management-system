@@ -1,12 +1,15 @@
 package posts
 
 import (
+	"fmt"
 	"server/database/model"
 	"server/utils"
 )
 
 type Service interface {
 	CreatePost(input postCreateInput, token string) error
+	GetAllPost() (error, []model.Post)
+	GetPostByID(id uint) (model.Post, error)
 }
 
 type PostService struct {
@@ -40,4 +43,24 @@ func (service *PostService) CreatePost(input postCreateInput, token string) erro
 	}
 
 	return nil
+}
+
+func (service *PostService) GetAllPost() (error, []model.Post) {
+	var err error
+	err, posts := service.repository.GetAllPosts()
+	if err != nil && posts != nil {
+		return err, posts
+	} else if err != nil {
+		return err, nil
+	}
+	return err, posts
+}
+
+func (service *PostService) GetPostByID(id uint) (model.Post, error) {
+	post, err := service.repository.GetPostByID(id)
+	if err != nil {
+		fmt.Println(err.Error())
+		return model.Post{}, err
+	}
+	return post, err
 }
