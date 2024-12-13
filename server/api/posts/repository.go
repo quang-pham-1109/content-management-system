@@ -45,7 +45,7 @@ func (reposistory *PostRepository) GetAllPosts() (error, []model.Post) {
 	query := "SELECT * FROM posts"
 	results := reposistory.database.Raw(query)
 	if results == nil {
-		err = fmt.Errorf("Fail to fetch posts of user !\nPlease check if posts / user exist in database ! ")
+		err = fmt.Errorf("Fail to fetch posts !")
 		return err, nil
 	}
 	rows, err := results.Rows()
@@ -83,7 +83,8 @@ func (reposistory *PostRepository) GetPostByID(id uint) (model.Post, error) {
 
 	result := reposistory.database.Raw(query, id)
 	if result == nil {
-		fmt.Println("Fail to execute query !")
+		err := fmt.Errorf("Fail to execute query !")
+		return model.Post{}, err
 	}
 	rows, err := result.Rows()
 	if err != nil {

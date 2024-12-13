@@ -48,11 +48,6 @@ func (service *PostService) CreatePost(input postCreateInput, token string) erro
 func (service *PostService) GetAllPost() (error, []model.Post) {
 	var err error
 	err, posts := service.repository.GetAllPosts()
-	if err != nil && posts != nil {
-		return err, posts
-	} else if err != nil {
-		return err, nil
-	}
 	return err, posts
 }
 
