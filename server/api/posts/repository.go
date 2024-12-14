@@ -36,7 +36,6 @@ func (repository *PostRepository) CreatePost(post model.Post, authorId uint) err
 
 // FUNCTION TO GET ALL POSTS
 func (reposistory *PostRepository) GetAllPosts() (error, []model.Post) {
-	fmt.Println("STARTING GET/posts request: ")
 	var err error
 	var catID sql.NullInt64
 	var updateTime sql.NullTime
@@ -73,12 +72,10 @@ func (reposistory *PostRepository) GetAllPosts() (error, []model.Post) {
 	return err, posts
 }
 
-// FUNCTION TO GET POST BY POST_ID
-
 func (reposistory *PostRepository) GetPostByID(id uint) (model.Post, error) {
 	var post model.Post
-	var catID sql.NullInt64
-	var updateTime sql.NullTime
+	var catID sql.NullInt64     // use this to handle nil value of category when fetch data from database
+	var updateTime sql.NullTime // use this to handle nil value of updateTime when fetch data from database
 	query := `SELECT * FROM posts WHERE id=?`
 
 	result := reposistory.database.Raw(query, id)
