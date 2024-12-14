@@ -15,5 +15,7 @@ func RegisterPostRoutes(router *gin.Engine, database *gorm.DB) {
 	postRoutes := router.Group("/posts")
 	{
 		postRoutes.POST("", middleware.Authenticate(), postHandler.CreatePost)
+		postRoutes.GET("/all", postHandler.GetAllPost)
+		postRoutes.GET("/:post_id", postHandler.GetPostByID)
 	}
 }
