@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import AdminForm from "./form";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import AdminForm from './form';
 
 const AdminCard = () => {
   return (

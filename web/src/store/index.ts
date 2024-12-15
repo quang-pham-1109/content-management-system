@@ -1,3 +1,7 @@
-import { getDefaultStore } from "jotai";
+import { atom, getDefaultStore } from 'jotai';
 
 export const appStore = getDefaultStore();
+
+const appState = atom({
+  isCreatePostDialogOpen: false,
+});

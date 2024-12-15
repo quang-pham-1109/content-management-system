@@ -1,4 +1,4 @@
-import { FetchError } from "./class/fetch-error";
+import { FetchError } from './class/fetch-error';
 
 interface FetchDataProps {
   method: string;
@@ -18,18 +18,18 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
  * @returns {Promise<T | FetchError>}
  */
 export const fetchData = async <T>({
-  method = "GET",
+  method = 'GET',
   path,
   name,
   body,
 }: FetchDataProps): Promise<T> => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const headers = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-      Accept: "application/json",
+      Accept: 'application/json',
     };
 
     const formattedBody = body ? JSON.stringify(body) : undefined;
@@ -52,6 +52,6 @@ export const fetchData = async <T>({
       throw err;
     }
 
-    throw new FetchError("Unknown Error", "An unknown error occurred", 500);
+    throw new FetchError('Unknown Error', 'An unknown error occurred', 500);
   }
 };

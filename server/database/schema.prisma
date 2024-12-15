@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Adjust based on your database provider
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  posts     Post[]   @relation("UserPosts")
+  media     Media[]  @relation("UserMedia")
+
+  @@map("users")
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  title      String
+  slug       String    @unique
+  content    String?
+  authorId   Int
+  categoryId Int?
+  status     String    @default("draft") @db.VarChar(20)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  author     User      @relation("UserPosts", fields: [authorId], references: [id])
+  category   Category? @relation("CategoryPosts", fields: [categoryId], references: [id])
+
+  @@map("posts")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  posts       Post[]   @relation("CategoryPosts") // Opposite relation field
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Media {
+  id         Int      @id @default(autoincrement())
+  fileName   String
+  filePath   String
+  uploadedBy Int
+
+  user       User     @relation("UserMedia", fields: [uploadedBy], references: [id]) // Relation to User
+
+  createdAt  DateTime @default(now())
+
+  @@map("media")
+}

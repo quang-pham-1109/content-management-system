@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "dev": {
+      "outputs": [],
+      "dependsOn": ["^dev"]
+    }
+  }
+}

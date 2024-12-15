@@ -1,13 +1,14 @@
-import { Search } from "lucide-react";
+import { Search } from 'lucide-react';
+import { ComponentProps } from 'react';
 
-import { Label } from "@/components/ui/label";
+import { Label } from '@/components/ui/label';
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarInput,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 
-export function SearchForm({ ...props }: React.ComponentProps<"form">) {
+export function SearchForm({ ...props }: ComponentProps<'form'>) {
   return (
     <form {...props}>
       <SidebarGroup className="py-0">

@@ -10,7 +10,7 @@ export class FetchError extends Error {
   constructor(name: string, error: string, status: number) {
     super(error);
 
-    this.name = "FetchError";
+    this.name = 'FetchError';
     this.status = status;
     this.name = name;
     this.timestamp = new Date();

@@ -1,10 +1,12 @@
+node_modules
+
 web/node_modules/
-web/.nuxt/
+web/.next/
 web/.output/
 web/.env
+web/.turbo/
 
-server/.env
-server/e2e/.env
-server/tmp/
+server/.env/
+server/.turbo/
 
-logs/
+.turbo

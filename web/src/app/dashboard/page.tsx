@@ -1,16 +1,16 @@
-import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { AppSidebar } from '@/components/dashboard/app-sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 
 const DashboardPage = () => {
   return (
@@ -25,7 +25,7 @@ const DashboardPage = () => {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">CMS Dashboard</BreadcrumbLink>
+                <BreadcrumbLink href="#my-posts">CMS Dashboard</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

@@ -10,15 +10,15 @@
         "terminal.integrated.shell.linux": "/bin/bash"
       },
       "extensions": [
-        "esbenp.prettier-vscode", 
-        "nuxtr.nuxt-vscode-extentions", 
-        "golang.go"      
+        "esbenp.prettier-vscode",
+        "nuxtr.nuxt-vscode-extentions",
+        "golang.go"
       ]
     }
   },
   "forwardPorts": [
-    3000,  // Nuxt.js default port
-    3001   // Common Go server port
+    3000, // Nuxt.js default port
+    3001 // Common Go server port
   ],
   "containerEnv": {
     "GOPATH": "/go"
