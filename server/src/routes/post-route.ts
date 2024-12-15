@@ -14,12 +14,11 @@ postRouter.post('/', verifyTokenFromHeader, createPostHandler);
 
 postRouter.get('/', getAllPostsHandler);
 
-postRouter.get('/:postId', verifyTokenFromHeader, getPostByIdHandler);
+postRouter.get('/:postId', getPostByIdHandler);
 
-postRouter.put(
-  '/:postId',
-  verifyTokenFromHeader,
-  updatePostContentByIdHandler,
-);
+postRouter.get('/:categoryId/category', verifyTokenFromHeader, getPostByIdHandler);
+
+postRouter.put('/:postId', verifyTokenFromHeader, updatePostContentByIdHandler);
+
 
 export { postRouter };

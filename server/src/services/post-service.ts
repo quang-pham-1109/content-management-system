@@ -49,6 +49,21 @@ export const getPostById = async (postId: number) => {
   return post[0];
 };
 
+export const getPostByCategoryId = async (categoryId: number) => {
+  const query = `
+    SELECT * FROM "posts"
+    WHERE "categoryId" = $1;
+  `;
+
+  const posts = await prisma.$queryRawUnsafe<Post[]>(
+    query,
+    categoryId 
+  );
+
+  return posts;
+};
+
+
 export const updatePostContentById = async (
   postId: number,
   content: string,
@@ -62,9 +77,9 @@ export const updatePostContentById = async (
   `;
   const updatedPost = await prisma.$queryRawUnsafe<Post[]>(
     query,
-    content, 
-    now,     
-    postId 
+    content,
+    now,
+    postId,
   );
   return updatedPost[0];
 };

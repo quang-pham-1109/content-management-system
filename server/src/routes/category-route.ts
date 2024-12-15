@@ -1,33 +1,17 @@
-// import { Router } from 'express';
-// import { verifyTokenFromHeader, validate } from '../middleware';
-// import { listSchema } from '../schemas';
-// import {
-//   createListHandler,
-//   getListsByBoardIdHandler,
-//   getListByIdHandler,
-//   updateListHandler,
-//   deleteListHandler,
-// } from '../controllers';
+import { Router } from 'express';
+import { verifyTokenFromHeader, validate } from '../middleware';
+import {
+  createCategoryHandler,
+  getAllCategoryHandler,
+} from '../controllers';
 
-// const listRouter = Router();
+const categoryRouter = Router();
 
-// listRouter.post(
-//   '/',
-//   validate(listSchema),
-//   verifyTokenFromHeader,
-//   createListHandler,
-// );
+categoryRouter.post('/', verifyTokenFromHeader, createCategoryHandler);
 
-// listRouter.get(
-//   '/:boardId/board',
-//   verifyTokenFromHeader,
-//   getListsByBoardIdHandler,
-// );
+categoryRouter.get(
+  '/',
+  getAllCategoryHandler,
+);
 
-// listRouter.get('/:listId', verifyTokenFromHeader, getListByIdHandler);
-
-// listRouter.put('/:listId', verifyTokenFromHeader, updateListHandler);
-
-// listRouter.delete('/:listId', verifyTokenFromHeader, deleteListHandler);
-
-// export { listRouter };
+export { categoryRouter };

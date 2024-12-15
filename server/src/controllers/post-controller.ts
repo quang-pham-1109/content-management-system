@@ -6,6 +6,7 @@ import {
   updatePostContentById,
   createPost,
   getAllPosts,
+  getPostByCategoryId,
 } from '../services';
 import { getUserIdFromToken } from '../middleware';
 import { createPostSchema, updatePostSchema } from '../schemas';
@@ -97,8 +98,8 @@ export const updatePostContentByIdHandler = async (
         .json({ message: 'Empty input, nothing updated' });
     }
 
-    const updatedBoard = await updatePostContentById(postId, content);
-    if (updatedBoard) {
+    const updatedPost = await updatePostContentById(postId, content);
+    if (updatedPost) {
       return res
         .status(StatusCodes.OK)
         .json({ message: 'Post content updated' });
@@ -108,3 +109,22 @@ export const updatePostContentByIdHandler = async (
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 };
+
+export const getPostByCategoryIdHandler = async (req: Request, res: Response) => {
+  try {
+    const categoryId = Number(req.params.categoryId);
+
+    if (Number.isNaN(categoryId)) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Invalid input' });
+    }
+
+    const posts = await getPostByCategoryId(categoryId);
+
+    return res.status(StatusCodes.OK).json(posts);
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+}

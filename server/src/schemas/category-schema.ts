@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export const commentSchema = z.object({
+export const createCategorySchema = z.object({
   body: z.object({
-    CardId: z.number(),
-    Comment: z.string(),
+    name: z.string().min(2, 'Name must be at least 2 characters long'),
+    description: z.string().optional(),
   }),
 });

@@ -1,83 +1,32 @@
-// import { Cards, PrismaClient, type Lists } from '@prisma/client';
-// import { deleteCardById } from './card-service';
+import { PrismaClient, type Post } from '@prisma/client';
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-// export const createList = async (Title: string, BoardId: number) => {
-//   const insertList = `
-//     INSERT INTO "Lists" ("Title") 
-//     VALUES ('${Title}')
-//     RETURNING "ListId";
-//   `;
+export const createCategory = async (name: string, description?: string) => {
+  const insertCategorySQL = `
+      INSERT INTO "categories" ("name", "description", "createdAt", "updatedAt")
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `;
 
-//   const lists = await prisma.$queryRawUnsafe<Lists[]>(insertList);
+  const now = new Date(); // Current timestamp for createdAt and updatedAt
 
-//   const newListId = lists[0].ListId;
-//   const insertBoardList = `
-//     INSERT INTO "BoardLists" ("BoardId", "ListId") 
-//     VALUES (${BoardId}, ${newListId});
-//   `;
+  const newCategory = await prisma.$queryRawUnsafe(
+    insertCategorySQL,
+    name,
+    description,
+    now,
+    now,
+  );
 
-//   const newBoardList = await prisma.$executeRawUnsafe(insertBoardList);
-//   return newBoardList;
-// };
+  return newCategory;
+};
 
-// export const getListsByBoardId = async (boardId: number) => {
-//   const query = `
-//     SELECT * FROM "Lists" 
-//     WHERE "ListId" IN (
-//       SELECT "ListId" FROM "BoardLists" 
-//       WHERE "BoardId" IN (
-//         SELECT "BoardId" FROM "Boards" 
-//         WHERE "BoardId" = ${boardId}
-//       )
-//     );
-//   `;
+export const getAllCategory = async () => {
+  const query = `
+    SELECT * FROM "categories";
+  `;
 
-//   const lists = await prisma.$queryRawUnsafe<Lists[]>(query);
-//   return lists;
-// };
-
-// export const getListById = async (listId: number) => {
-//   const query = `
-//     SELECT * FROM "Lists" 
-//     WHERE "ListId" = ${listId};
-//   `;
-
-//   const list = await prisma.$queryRawUnsafe<Lists[]>(query);
-
-//   return list[0];
-// };
-
-// export const updateList = async (listId: number, Title: string) => {
-//   const query = `
-//     UPDATE "Lists" 
-//     SET "Title" = '${Title}'
-//     WHERE "ListId" = ${listId};
-//   `;
-
-//   const updatedList = await prisma.$executeRawUnsafe(query);
-//   return updatedList;
-// };
-
-// export const deleteListById = async (listId: number) => {
-//   // Get all cards in the list
-//   const queryCard = `
-//     SELECT "CardId" FROM "ListCards"
-//     WHERE "ListId" = ${listId};
-//   `;
-//   const cards = await prisma.$queryRawUnsafe<Cards[]>(queryCard);
-
-//   // Delete all cards in the list
-//   for (const card of cards) {
-//     await deleteCardById(card.CardId);
-//   }
-
-//   // Delete list
-//   const queryDeleteList = `
-//     DELETE FROM "Lists"
-//     WHERE "ListId" = ${listId};
-//   `;
-//   const deletedList = await prisma.$executeRawUnsafe(queryDeleteList);
-//   return deletedList;
-// };
+  const categories = await prisma.$queryRawUnsafe<Post>(query);
+  return categories;
+}
