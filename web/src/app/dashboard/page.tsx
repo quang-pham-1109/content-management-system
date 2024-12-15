@@ -18,7 +18,7 @@ import {
 import { getAllPostsAtom } from '@/state/post-state';
 
 const DashboardPage = () => {
-  const { data, isPending } = useAtomValue(getAllPostsAtom);
+  const { data } = useAtomValue(getAllPostsAtom);
 
   return (
     <SidebarProvider>

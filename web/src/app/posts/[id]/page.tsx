@@ -13,7 +13,7 @@ interface BlogPageProps {
   params: { id: string };
 }
 
-export default async function BlogPage({ params }: BlogPageProps) {
+export default async function PostPage({ params }: BlogPageProps) {
   const { id } = params;
 
   const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`, {
@@ -54,7 +54,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
     <div className="flex p-4">
       {/* Main Content */}
       <div className="px-20">
-        <h1 className="text-5xl font-bold text-gray-900 mt-6 mb-8">{data.title}</h1>
+        <h1 className="text-5xl font-bold text-gray-900 mt-6 mb-8">
+          {data.title}
+        </h1>
         <div
           className="prose max-w-none text-gray-800"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
