@@ -4,7 +4,7 @@ import {
   createPostHandler,
   getAllPostsHandler,
   getPostByIdHandler,
-  updatePostContentByIdHandler,
+  updatePostByIdHandler,
 } from '../controllers';
 
 const postRouter = Router();
@@ -21,6 +21,6 @@ postRouter.get(
   getPostByIdHandler,
 );
 
-postRouter.put('/:postId', verifyTokenFromHeader, updatePostContentByIdHandler);
+postRouter.put('/:postId', verifyTokenFromHeader, updatePostByIdHandler);
 
 export { postRouter };

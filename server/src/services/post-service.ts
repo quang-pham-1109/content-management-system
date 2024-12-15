@@ -62,22 +62,28 @@ export const getPostByCategoryId = async (categoryId: number) => {
   return posts;
 };
 
-export const updatePostContentById = async (
+export const updatePostById = async (
   postId: number,
-  content: string,
+  content?: string,
+  status?: string,
+  title?: string,
+  categoryId?: number,
 ) => {
-  const now = new Date();
-  const query = `
-    UPDATE "posts"
-    SET "content" = $1, "updatedAt" = $2
-    WHERE "id" = $3
-    RETURNING *;
-  `;
-  const updatedPost = await prisma.$queryRawUnsafe<Post[]>(
-    query,
-    content,
-    now,
-    postId,
-  );
-  return updatedPost[0];
+  const updates: any = {};
+
+  // Dynamically add fields to update if they are provided
+  if (content !== undefined) updates.content = content;
+  if (status !== undefined) updates.status = status;
+  if (title !== undefined) updates.title = title;
+  if (categoryId !== undefined) updates.categoryId = categoryId;
+
+  // Always update the updatedAt timestamp
+  updates.updatedAt = new Date();
+
+  const updatedPost = await prisma.post.update({
+    where: { id: postId },
+    data: updates,
+  });
+
+  return updatedPost;
 };

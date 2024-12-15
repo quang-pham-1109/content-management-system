@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import {
   getPostById,
   findUserById,
-  updatePostContentById,
+  updatePostById,
   createPost,
   getAllPosts,
   getPostByCategoryId,
@@ -68,16 +68,13 @@ export const getPostByIdHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const updatePostContentByIdHandler = async (
-  req: Request,
-  res: Response,
-) => {
+export const updatePostByIdHandler = async (req: Request, res: Response) => {
   try {
     const postId = Number(req.params.postId);
 
     const parsedBody = updatePostSchema.parse({ body: req.body }).body;
 
-    const { content } = parsedBody;
+    const { content, status, title, categoryId } = parsedBody;
 
     if (Number.isNaN(postId)) {
       return res
@@ -92,13 +89,13 @@ export const updatePostContentByIdHandler = async (
         .json({ message: 'Board not found' });
     }
 
-    if (!content) {
-      return res
-        .status(StatusCodes.OK)
-        .json({ message: 'Empty input, nothing updated' });
-    }
-
-    const updatedPost = await updatePostContentById(postId, content);
+    const updatedPost = await updatePostById(
+      postId,
+      content,
+      status,
+      title,
+      categoryId,
+    );
     if (updatedPost) {
       return res
         .status(StatusCodes.OK)

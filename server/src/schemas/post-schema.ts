@@ -13,6 +13,10 @@ export type CreatePostInput = z.infer<typeof createPostSchema>['body'];
 export const updatePostSchema = z.object({
   body: z.object({
     content: z.string().optional(),
+    status: z.string().optional(),
+    title: z.string().optional(),
+    slug: z.string().optional(),
+    categoryId: z.number().optional(),
   }),
 });
 

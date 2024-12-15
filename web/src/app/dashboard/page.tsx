@@ -40,14 +40,7 @@ const DashboardPage = () => {
 
         {/* Content Section */}
         <div className="flex flex-wrap flex-1 m-6">
-          {data?.map((post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              title={post.title}
-              updatedAt={post.updatedAt}
-            />
-          ))}
+          {data?.map((post) => <PostCard key={post.id} post={post} />)}
         </div>
       </SidebarInset>
     </SidebarProvider>
