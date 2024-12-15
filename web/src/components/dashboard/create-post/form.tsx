@@ -18,6 +18,8 @@ import { Input } from '@/components/ui/input';
 import { createPostAtom } from '@/state/post-state';
 import { useAtomValue } from 'jotai';
 import { Spinner } from '@/components/ui/spinner';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 const createPostSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -26,7 +28,10 @@ const createPostSchema = z.object({
 type CreatePostSchema = z.infer<typeof createPostSchema>;
 
 export function CreatePostForm() {
-  const { mutate, isPending } = useAtomValue(createPostAtom);
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending } = useAtomValue(createPostAtom);
 
   const form = useForm<CreatePostSchema>({
     resolver: zodResolver(createPostSchema),
@@ -36,10 +41,18 @@ export function CreatePostForm() {
     },
   });
 
-  const onSubmit = (value: CreatePostSchema) => {
-    mutate(value, {
-      onSuccess: () => {},
-    });
+  const onSubmit = async (value: CreatePostSchema) => {
+    try {
+      const createdPost = await mutateAsync(value);
+
+      if (createdPost) {
+        router.push(`/dashboard/posts/${createdPost.id}`);
+
+        queryClient.invalidateQueries({ queryKey: ['posts'] });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

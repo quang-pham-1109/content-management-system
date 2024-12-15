@@ -35,4 +35,3 @@ export const getAllCategoryHandler = async (req: Request, res: Response) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 };
-

@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 
 export const createPost = async (
   title: string,
-  content: string,
   userId: string,
+  content?: string,
   slug?: string,
 ) => {
   // Generate slug if not provided
@@ -18,10 +18,10 @@ export const createPost = async (
       RETURNING *;
     `;
 
-  const post = await prisma.$queryRawUnsafe(
+  const post = await prisma.$queryRawUnsafe<Post[]>(
     insertPostSQL,
     title, // $1
-    content, // $2
+    content ?? '', // $2
     userId, // $3
     generatedSlug, // $4
     'draft', // $5 (default status)
@@ -29,12 +29,14 @@ export const createPost = async (
     new Date(), // $7 (current timestamp)
   );
 
-  return post;
+  return post[0];
 };
 
+// Sort by updatedAt in descending order
 export const getAllPosts = async () => {
   const query = `
-    SELECT * FROM "posts";
+    SELECT * FROM "posts"
+    ORDER BY "updatedAt" DESC;
   `;
   const posts = await prisma.$queryRawUnsafe<Post[]>(query);
   return posts;
@@ -55,14 +57,10 @@ export const getPostByCategoryId = async (categoryId: number) => {
     WHERE "categoryId" = $1;
   `;
 
-  const posts = await prisma.$queryRawUnsafe<Post[]>(
-    query,
-    categoryId 
-  );
+  const posts = await prisma.$queryRawUnsafe<Post[]>(query, categoryId);
 
   return posts;
 };
-
 
 export const updatePostContentById = async (
   postId: number,

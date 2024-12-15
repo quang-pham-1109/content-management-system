@@ -29,4 +29,4 @@ export const getAllCategory = async () => {
 
   const categories = await prisma.$queryRawUnsafe<Post>(query);
   return categories;
-}
+};

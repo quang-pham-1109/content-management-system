@@ -25,7 +25,7 @@ export const loginAdminAtom = atomWithMutation(() => {
 
       // Set localStorage token store
       if (response.token) {
-        setTokenStore(response.token);
+        localStorage.setItem('token', response.token.toString());
       }
 
       return response;

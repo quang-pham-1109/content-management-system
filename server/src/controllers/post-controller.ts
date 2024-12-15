@@ -25,9 +25,9 @@ export const createPostHandler = async (req: Request, res: Response) => {
         .json({ message: 'User not found' });
     }
 
-    const post = await createPost(title, content, userId, slug);
+    const post = await createPost(title, userId, content, slug);
     if (post) {
-      return res.status(StatusCodes.CREATED).json({ message: 'Post created' });
+      return res.status(StatusCodes.CREATED).json({ ...post });
     }
   } catch (error) {
     console.log(error);
@@ -110,7 +110,10 @@ export const updatePostContentByIdHandler = async (
   }
 };
 
-export const getPostByCategoryIdHandler = async (req: Request, res: Response) => {
+export const getPostByCategoryIdHandler = async (
+  req: Request,
+  res: Response,
+) => {
   try {
     const categoryId = Number(req.params.categoryId);
 
@@ -127,4 +130,4 @@ export const getPostByCategoryIdHandler = async (req: Request, res: Response) =>
     console.log(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
-}
+};

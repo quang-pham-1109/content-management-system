@@ -1,4 +1,8 @@
+'use client';
+
 import { AppSidebar } from '@/components/dashboard/app-sidebar';
+import PostCard from '@/components/dashboard/post-card';
+import { useAtomValue } from 'jotai';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,8 +15,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { getAllPostsAtom } from '@/state/post-state';
 
 const DashboardPage = () => {
+  const { data, isPending } = useAtomValue(getAllPostsAtom);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -32,13 +39,15 @@ const DashboardPage = () => {
         </header>
 
         {/* Content Section */}
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        <div className="flex flex-wrap flex-1 m-6">
+          {data?.map((post) => (
+            <PostCard
+              key={post.id}
+              id={post.id}
+              title={post.title}
+              updatedAt={post.updatedAt}
+            />
+          ))}
         </div>
       </SidebarInset>
     </SidebarProvider>

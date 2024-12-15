@@ -6,7 +6,6 @@ import {
   getPostByIdHandler,
   updatePostContentByIdHandler,
 } from '../controllers';
-import { createPostSchema } from '../schemas';
 
 const postRouter = Router();
 
@@ -16,9 +15,12 @@ postRouter.get('/', getAllPostsHandler);
 
 postRouter.get('/:postId', getPostByIdHandler);
 
-postRouter.get('/:categoryId/category', verifyTokenFromHeader, getPostByIdHandler);
+postRouter.get(
+  '/:categoryId/category',
+  verifyTokenFromHeader,
+  getPostByIdHandler,
+);
 
 postRouter.put('/:postId', verifyTokenFromHeader, updatePostContentByIdHandler);
-
 
 export { postRouter };

@@ -1,15 +1,13 @@
-export interface CreatePostResponse {
-  message: string;
-}
-
 export interface Post {
   id: number;
   title: string;
-  body: string;
+  slug: string;
+  content: string;
+  authorId: number;
+  categoryId: number | null;
+  status: 'draft' | 'published' | 'archived';
   createdAt: string;
   updatedAt: string;
 }
 
-export interface GetAllPostsResponse {
-  posts: Post[];
-}
+export type GetAllPostsResponse = Post[];
