@@ -99,12 +99,12 @@ const PostEditorPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-row">
+      <div className="flex">
         {/* Editor Panel */}
         <div className="w-1/2 p-4 border-r">
           <CodeMirror
             value={text}
-            height="820px"
+            height="760px"
             extensions={[
               markdown({ base: markdownLanguage, codeLanguages: languages }),
             ]}
@@ -114,10 +114,10 @@ const PostEditorPage = () => {
         </div>
 
         {/* Preview Panel */}
-        <div className="w-1/2 h-[780px] p-4 bg-gray-50">
-          <ScrollArea className="h-[780px] w-full">
+        <div className="w-1/2 h-[740px] p-4 bg-gray-50">
+          <ScrollArea className="h-[740px] w-full">
             <div
-              className="prose max-w-none"
+              className="prose max-w-none h-[740px] overflow-y-auto"
               dangerouslySetInnerHTML={{ __html: htmlPreview }}
             />
           </ScrollArea>

@@ -1,6 +1,7 @@
 'use server';
 
 import React from 'react';
+import Head from 'next/head';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
@@ -51,19 +52,40 @@ export default async function PostPage({ params }: BlogPageProps) {
   }
 
   return (
-    <div className="flex p-4">
-      {/* Main Content */}
-      <div className="px-20">
-        <h1 className="text-5xl font-bold text-gray-900 mt-6 mb-8">
-          {data.title}
-        </h1>
-        <div
-          className="prose max-w-none text-gray-800"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
+    <>
+      {/* SEO Metadata */}
+      <Head>
+        <title>{data.title}</title>
+        <meta name="description" content={data.description || 'A blog post'} />
+        <meta property="og:title" content={data.title} />
+        <meta
+          property="og:description"
+          content={data.description || 'A blog post'}
         />
+        <meta
+          property="og:url"
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${data.slug}`}
+        />
+        <meta property="og:type" content="article" />
+        <link
+          rel="canonical"
+          href={`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${data.slug}`}
+        />
+      </Head>
+      <div className="flex p-4">
+        {/* Main Content */}
+        <div className="px-20">
+          <h1 className="text-5xl font-bold text-gray-900 mt-6 mb-8">
+            {data.title}
+          </h1>
+          <div
+            className="prose max-w-none text-gray-800"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
+        </div>
+
+        {/* <Onthispage className="text-sm w-[50%]" htmlContent={htmlContent} /> */}
       </div>
-      {/* Uncomment if you need the OnThisPage component */}
-      {/* <Onthispage className="text-sm w-[50%]" htmlContent={htmlContent} /> */}
-    </div>
+    </>
   );
 }
