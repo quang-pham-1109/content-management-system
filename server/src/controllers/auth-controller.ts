@@ -63,3 +63,19 @@ export const registerHandler = async (req: Request, res: Response) => {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 };
+
+export const authenticationStatusHandler = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    console.log('req', req);
+    
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: 'You are authenticated' });
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};

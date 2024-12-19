@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import rehypeStringify from 'rehype-stringify';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
@@ -18,8 +18,11 @@ import { Button } from '@/components/ui/button';
 import StatusSelect from '@/components/post-action-bar/status-select';
 import CategorySelect from '@/components/post-action-bar/category-select';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAuth } from '@/hooks/use-auth';
 
 const PostEditorPage = () => {
+  useAuth();
+
   const router = useRouter();
 
   const post = useAtomValue(postAtom);

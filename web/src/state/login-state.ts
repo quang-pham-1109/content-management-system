@@ -2,8 +2,9 @@ import { toast } from 'sonner';
 import { fetchData } from '@/lib/api-client';
 import { FetchError } from '@/lib/class/fetch-error';
 import { LoginResponse } from '@/types/auth';
-import { atomWithMutation } from 'jotai-tanstack-query';
+import { atomWithMutation, atomWithQuery } from 'jotai-tanstack-query';
 import { setTokenStore } from '@/store/login-store';
+import { GenericResponse } from '@/types/base';
 
 interface LoginAdminProps {
   email: string;
@@ -49,6 +50,35 @@ export const loginAdminAtom = atomWithMutation(() => {
       toast.success('Login successful', {
         description: 'You are now logged in',
       });
+    },
+  };
+});
+
+export const fetchAuthAtom = atomWithQuery(() => {
+  return {
+    queryKey: ['auth'],
+    queryFn: async () => {
+      const res = await fetchData<GenericResponse>({
+        method: 'GET',
+        path: '/auth',
+        name: 'fetch-auth',
+      });
+
+      return res;
+    },
+    onError: (error: FetchError) => {
+      if (error.status === 401) {
+        toast.error('Unauthorized', {
+          description: 'Please login to access this page',
+        });
+        window.location.href = '/admin';
+      }
+
+      if (error.status === 500) {
+        toast.error('Server Error', {
+          description: 'Please try again later',
+        });
+      }
     },
   };
 });

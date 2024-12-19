@@ -16,8 +16,11 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { getAllPostsAtom } from '@/state/post-state';
+import { useAuth } from '@/hooks/use-auth';
 
 const DashboardPage = () => {
+  useAuth();
+
   const { data } = useAtomValue(getAllPostsAtom);
 
   return (
@@ -39,7 +42,7 @@ const DashboardPage = () => {
         </header>
 
         {/* Content Section */}
-        <div className="flex flex-wrap flex-1 m-6">
+        <div className="flex flex-row flex-wrap m-6">
           {data?.map((post) => <PostCard key={post.id} post={post} />)}
         </div>
       </SidebarInset>

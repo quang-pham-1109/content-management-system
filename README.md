@@ -24,7 +24,7 @@ The monorepo is managed with Turborepo. To start the project, simply run the fol
 npm run dev
 ```
 
-This command will start both the frontend and backend concurrently.  
+This command will start both the frontend and backend concurrently.
 
 ## Development
 
