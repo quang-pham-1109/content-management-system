@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { fetchAuthAtom } from '@/state/login-state';
 import { useAtomValue } from 'jotai';

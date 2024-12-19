@@ -69,8 +69,6 @@ export const authenticationStatusHandler = async (
   res: Response,
 ) => {
   try {
-    console.log('req', req);
-    
     return res
       .status(StatusCodes.OK)
       .json({ message: 'You are authenticated' });

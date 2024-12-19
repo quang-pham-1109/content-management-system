@@ -3,9 +3,10 @@
 import { Separator } from '@/components/ui/separator';
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { getAllPostsAtom } from '@/state/post-state';
 import { getAllCategoriesAtom } from '@/state/category-state';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
 const BlogPage = () => {
   const router = useRouter();
@@ -13,21 +14,29 @@ const BlogPage = () => {
   const { data: posts } = useAtomValue(getAllPostsAtom);
   const { data: categories } = useAtomValue(getAllCategoriesAtom);
 
-  const mappedCategories =
-    categories?.map((category) => ({
-      label: category.name,
-      value: category.id,
-    })) || [];
+  const mappedCategories = useMemo(() => {
+    return (
+      categories?.map((category) => ({
+        label: category.name,
+        value: category.id,
+      })) || []
+    );
+  }, [categories]);
 
   const [currentTab, setCurrentTab] = useState<number | null>(
     mappedCategories[0]?.value || null,
   );
 
+  const publishedPosts = useMemo(() => {
+    return posts?.filter((post) => post.status === 'published');
+  }, [posts]);
+
   // Filter posts based on the selected tab (categoryId) or show all if no tab is selected
-  const filteredPosts =
-    currentTab === null
-      ? posts
-      : posts?.filter((post) => post.categoryId === currentTab);
+  const filteredPosts = useMemo(() => {
+    return currentTab === null
+      ? publishedPosts
+      : publishedPosts?.filter((post) => post.categoryId === currentTab);
+  }, [publishedPosts, currentTab]);
 
   // Handle tab selection or deselection (on double-click)
   const handleTabClick = (categoryId: number) => {
@@ -39,6 +48,10 @@ const BlogPage = () => {
       setCurrentTab(categoryId);
     }
   };
+
+  const relativeUpdatedAt = useCallback((date: string) => {
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
+  }, []);
 
   return (
     <div className="p-10">
@@ -73,7 +86,7 @@ const BlogPage = () => {
           >
             <h2 className="font-semibold text-lg">{post.title}</h2>
             <p className="text-sm text-gray-500">
-              Updated {new Date(post.updatedAt).toLocaleDateString()}
+              Updated {relativeUpdatedAt(post.updatedAt)}
             </p>
           </div>
         ))}
